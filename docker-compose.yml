@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: questionnaire-mysql
+    ports:
+      - "3308:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=questionnaire_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - laravel
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      - APP_NAME=IT Questions - Student Project
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_URL=http://localhost:8080
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=questionnaire_db
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - SESSION_DRIVER=file
+    depends_on:
+      - mysql
+      - setup
+    networks:
+      - laravel
+
+  setup:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/html
+    command: >
+      sh -c "sleep 30 &&
+             php artisan config:clear &&
+             php artisan migrate:fresh --force &&
+             php artisan db:seed --force"
+    environment:
+      - APP_NAME=IT Questions - Student Project
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_URL=http://localhost:8080
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=questionnaire_db
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - SESSION_DRIVER=file
+    depends_on:
+      - mysql
+    networks:
+      - laravel
+
+volumes:
+  mysql_data:
+
+networks:
+  laravel:
+    driver: bridge
