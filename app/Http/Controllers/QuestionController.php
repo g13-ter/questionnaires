@@ -8,26 +8,20 @@ use App\Models\Answer;
 
 class QuestionController extends Controller
 {
-    /**
-     * Display all questions in survey form.
-     */
+    // show all questions
     public function index()
     {
         $questions = Question::all();
         return view('survey', compact('questions'));
     }
 
-    /**
-     * Display the survey completion page.
-     */
+    // show thank you page
     public function surveyComplete()
     {
         return view('survey-complete');
     }
 
-    /**
-     * Store user answers for all questions.
-     */
+    // save answers to database
     public function store(Request $request)
     {
         $request->validate([

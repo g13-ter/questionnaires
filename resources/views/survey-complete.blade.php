@@ -10,7 +10,7 @@
         <p class="completion-message">Thank you for completing the IT Questions Survey. Your responses have been recorded successfully.</p>
         
         <div class="completion-actions">
-            <a href="{{ route('survey') }}" class="btn">Take Survey Again</a>
+            <a href="{{ route('questionnaire.index') }}" class="btn">Take Survey Again</a>
         </div>
     </div>
 </div>
