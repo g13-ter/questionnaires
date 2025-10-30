@@ -15,7 +15,7 @@
         </div>
     @endif
 
-    <form action="{{ route('survey.submit') }}" method="POST" id="surveyForm">
+    <form action="{{ route('questionnaire.store') }}" method="POST" id="surveyForm">
         @csrf
         
         <!-- User Information Section -->
